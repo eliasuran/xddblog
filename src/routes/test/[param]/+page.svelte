@@ -9,7 +9,7 @@
 <div class="mt-20 dark:text-text text-textLight p-24 flex flex-col gap-8 font-mono break-words">
 	<div>
 		<h2 class="text-2xl">{$page.url.pathname.split('/')[1]}/</h2>
-		<h1 class="text-8xl">{$page.url.pathname.split('/')[2].replace(/%20/g, ' ')}</h1>
+		<h1 class="text-7xl">{$page.url.pathname.split('/')[2].replace(/%20/g, ' ')}</h1>
 	</div>
 	<div
 		class="w-full h-20 dark:bg-primary bg-primaryLight border dark:border-secondary border-secondaryLight rounded-md flex justify-around items-center"
