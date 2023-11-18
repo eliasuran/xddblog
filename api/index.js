@@ -12,3 +12,5 @@ app.get('/popular', getPopularPosts);
 app.listen(port, () => {
 	console.log(`Running on localhost:${port}`);
 });
+
+module.exports = app;
