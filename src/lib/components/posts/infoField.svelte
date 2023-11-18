@@ -1,7 +1,9 @@
 <script lang="ts">
-	export let postData: any;
-	import Icon from '@iconify/svelte';
+	import { page } from '$app/stores';
 
+	const postData = $page.data.props.post[0];
+
+	import Icon from '@iconify/svelte';
 	const iconColor = '#E82A93';
 	const iconHeight = '25';
 </script>

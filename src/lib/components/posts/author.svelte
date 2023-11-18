@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let postData: any;
+	import { page } from '$app/stores';
+
+	const postData = $page.data.props.post[0];
 </script>
 
 <div class="text-xdd flex gap-2 items-center">

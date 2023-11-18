@@ -34,3 +34,27 @@ export const getPost = (req, res) => {
 		}
 	);
 };
+
+export const getLatestPosts = (req, res) => [
+	pool.query(
+		`SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.id ORDER BY date DESC LIMIT 2`,
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json(results.rows);
+		}
+	)
+];
+
+export const getPopularPosts = (req, res) => [
+	pool.query(
+		`SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.id ORDER BY likes DESC LIMIT 2`,
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json(results.rows);
+		}
+	)
+];
