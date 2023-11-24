@@ -1,4 +1,4 @@
-import { apiUrl } from '$lib/host';
+import { apiUrl } from '$lib/host.js';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

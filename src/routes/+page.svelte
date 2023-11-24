@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { apiUrl } from '$lib/host';
+	import { apiUrl } from '$lib/host.js';
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import LatestPosts from '$lib/components/home/latestPosts.svelte';
