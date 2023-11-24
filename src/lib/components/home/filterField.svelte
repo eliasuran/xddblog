@@ -1,29 +1,21 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-
-	const iconColor = '#E82A93';
-	const iconHeight = 25;
+	export let selected: string[];
+	import Filter from './filter.svelte';
 </script>
 
 <div
-	class="w-full h-16 bg-primary border-2 border-secondary rounded-md flex items-center justify-between overflow-hidden"
+	class="w-full h-16 bg-primary border border-secondary rounded-md flex items-center justify-between overflow-hidden"
 >
 	<div class="flex">
-		<button class="border-r border-secondary p-5 flex gap-2 hover:bg-secondary"
-			>new <Icon icon="mdi:lightning-bolt-outline" height={iconHeight} color={iconColor} /></button
-		>
-		<button class="border-r border-secondary p-5 flex gap-2 hover:bg-secondary"
-			>popular <Icon icon="mdi:heart-outline" height={iconHeight} color={iconColor} /></button
-		>
-		<button class="border-r border-secondary p-5 flex gap-2 hover:bg-secondary"
-			>react <Icon icon="mdi:react" height={iconHeight} color={iconColor} /></button
-		>
-		<button class="border-r border-secondary p-5 flex gap-2 hover:bg-secondary"
-			>vue <Icon icon="mdi:vuejs" height={iconHeight} color={iconColor} /></button
-		>
-		<button class="border-r border-secondary p-5 flex gap-2 hover:bg-secondary"
-			>svelte <Icon icon="simple-icons:svelte" height={iconHeight} color={iconColor} /></button
-		>
+		<Filter {selected} text={'new'} icon={'mdi:lightning-bolt-outline'} />
+		<Filter {selected} text={'popular'} icon={'mdi:heart-outline'} />
+		<Filter {selected} text={'react'} icon={'mdi:react'} />
+		<Filter {selected} text={'vue'} icon={'mdi:vuejs'} />
+		<Filter {selected} text={'svelte'} icon={'simple-icons:svelte'} />
 	</div>
-	<input />
+	<input
+		class="bg-transparent w-full mx-2 border border-secondary p-2 rounded-md outline-none"
+		type="text"
+		placeholder="search posts, tags, authors..."
+	/>
 </div>

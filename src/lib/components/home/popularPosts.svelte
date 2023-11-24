@@ -22,21 +22,22 @@
 	</div>
 	<div class="flex justify-around">
 		<div>
-			By <a href={`/users/${postData.author_username}`} class="underline cursor-pointer text-xdd"
+			<span class="text-xdd">by</span>
+			<a href={`/users/${postData.author_username}`} class="underline cursor-pointer"
 				>{postData.author_username}</a
 			>
 		</div>
 		<div class="flex gap-2 justify-end">
-			{postData.likes}
 			<button class="cursor-pointer"
 				><Icon icon="mdi:heart-outline" color={iconColor} height={iconHeight} /></button
 			>
+			{postData.likes}
 		</div>
 		<div class="flex gap-2 justify-end">
-			{postData.comments}
 			<button class="cursor-pointer">
 				<Icon icon="mdi:comment-outline" color={iconColor} height={iconHeight} /></button
 			>
+			{postData.comments}
 		</div>
 	</div>
 	{#if popup}

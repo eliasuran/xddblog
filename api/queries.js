@@ -37,7 +37,7 @@ export const getPost = (req, res) => {
 
 export const getLatestPosts = (req, res) => [
 	pool.query(
-		`SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.id ORDER BY date DESC LIMIT 2`,
+		`SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.id ORDER BY date DESC`,
 		(error, results) => {
 			if (error) {
 				throw error;
@@ -58,3 +58,19 @@ export const getPopularPosts = (req, res) => [
 		}
 	)
 ];
+
+export const getFilteredPosts = (req, res) => {
+	const tags = req.query.tag.split(',');
+	pool.query(
+		`SELECT posts.*, users.name as author_username FROM posts 
+    JOIN users ON posts.author = users.id 
+    WHERE posts.tags @> $1::text[]`,
+		[tags],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json(results.rows);
+		}
+	);
+};

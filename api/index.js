@@ -1,14 +1,18 @@
 import express from 'express';
-import { getUsers, getPost, getLatestPosts, getPopularPosts } from './queries.js';
+import cors from 'cors';
+import { getUsers, getPost, getLatestPosts, getPopularPosts, getFilteredPosts } from './queries.js';
 
-export const app = express();
-const port = 3001;
+const app = express();
+app.use(cors());
+const host = '127.0.0.1';
+const port = 3250;
 
 app.get('/users', getUsers);
 app.get('/posts/:id', getPost);
 app.get('/latest', getLatestPosts);
 app.get('/popular', getPopularPosts);
+app.get('/filtered', getFilteredPosts);
 
-app.listen(port, () => {
-	console.log(`Running on localhost:${port}`);
+app.listen(port, host, () => {
+	console.log(`Running on ${host}:${port}`);
 });

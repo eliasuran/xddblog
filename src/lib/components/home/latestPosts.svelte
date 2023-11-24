@@ -18,7 +18,8 @@
 	</div>
 	<div class="flex justify-around">
 		<div>
-			By <a href={`/users/${postData.author_username}`} class="underline cursor-pointer text-xdd"
+			<span class="text-xdd">by</span>
+			<a href={`/users/${postData.author_username}`} class="underline cursor-pointer"
 				>{postData.author_username}</a
 			>
 		</div>

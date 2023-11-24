@@ -1,9 +1,10 @@
+import { apiUrl } from '$lib/host';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }: any) => {
 	try {
-		const res = await fetch(`http://localhost:3001/posts/${params.id}`, {
+		const res = await fetch(`${apiUrl}:3250/posts/${params.id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'

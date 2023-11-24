@@ -1,31 +1,69 @@
 <script lang="ts">
+	import { apiUrl } from '$lib/host';
+	import { onMount } from 'svelte';
+	import Icon from '@iconify/svelte';
 	import LatestPosts from '$lib/components/home/latestPosts.svelte';
 	import PopularPosts from '$lib/components/home/popularPosts.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
+	import FilterResults from '$lib/components/home/filterResults.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
+	let selectedOrder = 'new';
+	let selected = ['svelte'];
+
 	const latestPostsData = data.props.latestPosts;
-	const popularPotsData = data.props.popularPosts;
+	const popularPostsData = data.props.popularPosts;
+	let filteredPosts: string[] = [];
+
+	const getFilteredPosts = async () => {
+		const tags = selected.join(',');
+		console.log(`Fetching with tags ${tags}`);
+		try {
+			const res = await fetch(`${apiUrl}:3250/filtered?tag=${tags}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (res.status === 200) {
+				filteredPosts = await res.json();
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	onMount(() => {
+		getFilteredPosts();
+	});
 </script>
 
 <div class="mt-20 dark:text-text text-textLight p-24 flex flex-col gap-20 font-mono">
+	<div class="text-xdd text-9xl flex justify-center gap-2">
+		<h1>xddblog</h1>
+		<Icon icon="simple-icons:svelte" />
+	</div>
 	<div class="relative border-t-4 border-xdd w-full h-96 pt-6 flex justify-around items-center">
 		<h1 class="absolute -top-7 left-14 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">
 			latest posts
 		</h1>
-		{#each latestPostsData as postData (postData.id)}<LatestPosts {postData} />{/each}
+		{#each latestPostsData.slice(0, 2) as postData (postData.id)}<LatestPosts {postData} />{/each}
 	</div>
 
 	<div class="relative border-t-4 border-xdd w-full h-96 pt-6 flex justify-around items-center">
 		<h1 class="absolute -top-7 right-14 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">
 			popular this week
 		</h1>
-		{#each popularPotsData as postData (postData.id)}<PopularPosts {postData} />{/each}
+		{#each popularPostsData as postData (postData.id)}<PopularPosts {postData} />{/each}
 	</div>
 
-	<div class="relative border-t-4 border-xdd w-full h-96 pt-16 flex justify-around">
+	<div class="relative border-t-4 border-xdd w-full pt-16 flex flex-col gap-8 items-center">
 		<h1 class="absolute -top-7 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">explore</h1>
-		<FilterField />
+		<FilterField {selected} />
+		<div class="flex flex-col gap-4 w-full">
+			{#each filteredPosts as postData} <FilterResults {postData} /> {/each}
+		</div>
 	</div>
 </div>
