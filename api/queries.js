@@ -9,6 +9,26 @@ export const getUsers = (req, res) => {
 	});
 };
 
+export const register = async (req, res) => {
+	const { username, password } = req.query;
+	try {
+		await pool.query('INSERT INTO users (id, name, password) VALUES (e, $1, $2)', [
+			username,
+			password
+		]);
+
+		const data = await pool.query('SELECT * FROM users WHERE name = $1', [username]);
+
+		res.status(200).send({ status: 'ok', user: data.rows[0] });
+	} catch (error) {
+		console.error('Couldnt create user', error);
+	}
+};
+
+export const login = async (req, res) => {
+	const { username, password } = req.query;
+};
+
 export const getPost = (req, res) => {
 	const postId = req.params.id;
 	pool.query(

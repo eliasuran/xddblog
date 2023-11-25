@@ -18,7 +18,6 @@
 
 	const getFilteredPosts = async () => {
 		const tags = selected.join(',');
-		console.log(`Fetching with tags ${tags}`);
 		try {
 			const res = await fetch(`${apiUrl}:3250/filtered?tag=${tags}`, {
 				method: 'GET',
@@ -40,7 +39,7 @@
 	});
 </script>
 
-<div class="mt-20 dark:text-text text-textLight p-24 flex flex-col gap-20 font-mono">
+<div class="mt-20 p-24 flex flex-col gap-20">
 	<div class="text-xdd text-9xl flex justify-center gap-2">
 		<h1>xddblog</h1>
 		<Icon icon="simple-icons:svelte" />
