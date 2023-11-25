@@ -10,7 +10,6 @@
 	const toggleRegister = () => {
 		showRegister = !showRegister;
 	};
-
 	const toggleLogin = () => {
 		showLogin = !showLogin;
 	};
@@ -38,7 +37,6 @@
 		class="absolute inset-0 bg-bg/70 backdrop-blur z-40 overflow-hidden cursor-auto"
 	/>
 {/if}
-
 {#if showLogin}
 	<Login {toggleLogin} />
 	<button
