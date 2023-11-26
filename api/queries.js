@@ -1,0 +1,168 @@
+import { pool } from './db.js';
+import bcrypt from 'bcrypt';
+import { v4 } from 'uuid';
+import { parse } from 'cookie';
+
+export const session = async (req, res) => {
+	const cookies = parse(req.headers.cookie || '');
+	const userSession = await pool.query('SELECT * FROM session WHERE id = $1', [cookies.session]);
+	console.log(userSession.rows[0]);
+	if (userSession.rowCount > 0) {
+		res.status(200).send(userSession.rows[0]);
+	} else {
+		res.status(400).send({});
+	}
+};
+
+// get all users
+export const getUsers = (req, res) => {
+	pool.query('SELECT * FROM users', (error, results) => {
+		if (error) {
+			throw error;
+		}
+		res.status(200).json(results.rows);
+	});
+};
+
+// register a new user
+export const register = async (req, res) => {
+	const { username, password } = req.query; // replace with body since it works after bodyParser implementation
+	try {
+		const hashedPassword = await bcrypt.hash(password, 10); // hash password with bcrypt
+		await pool.query('INSERT INTO users (name, password) VALUES ($1, $2)', [
+			// create the new user
+			username,
+			hashedPassword // use hashed password
+		]);
+
+		const data = await pool.query('SELECT * FROM users WHERE name = $1', [username]); // get the created user
+
+		res.status(200).send({ status: 'ok', user: data.rows[0] }); // return username and passwrod
+	} catch (error) {
+		console.error('Couldnt create user', error);
+	}
+};
+
+// login user
+export const login = async (req, res) => {
+	const { username, password } = req.body;
+	try {
+		//find the hashed password connected to the user in the db
+		const foundPassword = await pool.query('SELECT password FROM users WHERE name = $1', [
+			username
+		]);
+		// compare the password from the frontend with the hashed one, if its correct...
+		bcrypt.compare(password, foundPassword.rows[0].password, async (err, result) => {
+			if (err) {
+				console.log('Error decoding password', err);
+				return;
+			}
+			if (result) {
+				// find the user that you just had the correct username and password for
+				const data = await pool.query(
+					'SELECT users.name, users.uid FROM users WHERE name = $1 AND password = $2',
+					[username, foundPassword.rows[0].password]
+				);
+				// if it finds a user with the login information, create a session which contains username and uid
+				if (data.rowCount > 0) {
+					const sessionId = v4(); // generate a sessionId
+					// delete any new session created if one already exists (only for production and testing cause log out isnt a feature yet and using postman)
+					const existingSession = await pool.query('SELECT * FROM session WHERE user_name = $1', [
+						username
+					]);
+					if (existingSession) {
+						await pool.query('DELETE FROM session WHERE user_name = $1', [username]);
+					}
+					await pool.query('INSERT INTO session (id, user_id, user_name) VALUES ($1, $2, $3)', [
+						sessionId,
+						data.rows[0].uid,
+						username
+					]);
+					res.set('Set-Cookie', `session=${sessionId}`);
+					res.status(200).send({ status: 'ok', user: data.rows[0] }); // in the end, return user data
+				}
+			} else {
+				console.log('Incorrect password');
+			}
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// log out user
+export const logout = async (req, res) => {
+	// delete sessions[req.headers.cookie?.split('=')[1]]; // delete the session from the sessions object
+	res.set('Set-Cookie', 'session=; expires=Thu, 01 Jan 1969 00:00:00 GMT'); // clear the cookie xpp
+	res.status(200).send('Logged out successfully');
+};
+
+// get a certain post
+export const getPost = (req, res) => {
+	const postId = req.params.id;
+	pool.query(
+		`SELECT 
+      posts.*, 
+      users.name as author_username 
+    FROM 
+      posts 
+    JOIN 
+      users ON posts.author = users.uid 
+    WHERE 
+      posts.id = $1`,
+		[postId], // get all info on post and author thru id
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			if (results.rows.length === 0) {
+				res.status(404).json(`Didn't find a post with id: ${postId}`);
+			} else {
+				res.status(200).json(results.rows); //return post information
+			}
+		}
+	);
+};
+
+// get the latest posts
+export const getLatestPosts = (req, res) => [
+	pool.query(
+		`SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid ORDER BY date DESC`,
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json(results.rows);
+		}
+	)
+];
+
+// get most popular posts (currently limited to 2)
+export const getPopularPosts = (req, res) => [
+	pool.query(
+		`SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid ORDER BY likes DESC LIMIT 2`,
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json(results.rows);
+		}
+	)
+];
+
+// get posts based on current filter
+export const getFilteredPosts = (req, res) => {
+	const tags = req.query.tag.split(',');
+	pool.query(
+		`SELECT posts.*, users.name as author_username FROM posts 
+    JOIN users ON posts.author = users.uid 
+    WHERE posts.tags @> $1::text[]`,
+		[tags],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json(results.rows);
+		}
+	);
+};
