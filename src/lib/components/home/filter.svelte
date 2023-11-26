@@ -21,7 +21,6 @@
 			selected.push(text);
 		}
 		selected = selected;
-		console.log(selected);
 	}}
 	class={`${
 		selected.includes(text) && 'bg-secondary'

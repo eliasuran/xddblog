@@ -14,7 +14,7 @@
 	tabindex="0"
 	on:mouseenter={() => (popup = true)}
 	on:mouseleave={() => (popup = false)}
-	class="w-2/3 h-16 bg-primary border border-secondary rounded-md relative flex justify-between items-center px-4 cursor-auto"
+	class="w-full h-16 bg-primary border border-secondary rounded-md relative flex justify-between items-center px-4 cursor-auto"
 >
 	<h1 class="text-2xl">{postData.title}</h1>
 	<div class="flex flex-col items-end gap-1">

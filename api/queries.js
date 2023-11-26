@@ -26,7 +26,7 @@ export const getUsers = (req, res) => {
 
 // register a new user
 export const register = async (req, res) => {
-	const { username, password } = req.query; // replace with body since it works after bodyParser implementation
+	const { username, password } = req.body;
 	try {
 		const hashedPassword = await bcrypt.hash(password, 10); // hash password with bcrypt
 		await pool.query('INSERT INTO users (name, password) VALUES ($1, $2)', [
@@ -37,9 +37,12 @@ export const register = async (req, res) => {
 
 		const data = await pool.query('SELECT * FROM users WHERE name = $1', [username]); // get the created user
 
-		res.status(200).send({ status: 'ok', user: data.rows[0] }); // return username and passwrod
+		res.status(200).send({ user: data.rows[0] }); // return username and passwrod
 	} catch (error) {
-		console.error('Couldnt create user', error);
+		console.log(error);
+		if (error.code == 23505) {
+			res.status(409).send({ error: 'User already exists' });
+		}
 	}
 };
 
@@ -82,7 +85,7 @@ export const login = async (req, res) => {
 					res.status(200).send({ status: 'ok', user: data.rows[0] }); // in the end, return user data
 				}
 			} else {
-				console.log('Incorrect password');
+				res.status(401).send({ error: 'Incorrect password' });
 			}
 		});
 	} catch (error) {
@@ -93,7 +96,7 @@ export const login = async (req, res) => {
 // log out user
 export const logout = async (req, res) => {
 	// delete sessions[req.headers.cookie?.split('=')[1]]; // delete the session from the sessions object
-	res.set('Set-Cookie', 'session=; expires=Thu, 01 Jan 1969 00:00:00 GMT'); // clear the cookie xpp
+	res.set('Set-Cookie', 'session=; expires=Thu, 01 Jan 1969 00:00:00 GMT'); // clear the cookie xdd
 	res.status(200).send('Logged out successfully');
 };
 
@@ -156,7 +159,8 @@ export const getFilteredPosts = (req, res) => {
 	pool.query(
 		`SELECT posts.*, users.name as author_username FROM posts 
     JOIN users ON posts.author = users.uid 
-    WHERE posts.tags @> $1::text[]`,
+    WHERE posts.tags @> $1::text[] 
+    ORDER BY date DESC`,
 		[tags],
 		(error, results) => {
 			if (error) {

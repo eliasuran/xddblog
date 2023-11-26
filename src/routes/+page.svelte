@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { apiUrl } from '$lib/host.js';
-	import { onMount } from 'svelte';
+	import { afterUpdate } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import LatestPosts from '$lib/components/home/latestPosts.svelte';
 	import PopularPosts from '$lib/components/home/popularPosts.svelte';
@@ -9,14 +9,13 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	let selectedOrder = 'new';
 	let selected = ['svelte'];
 
 	const latestPostsData = data.props.latestPosts;
 	const popularPostsData = data.props.popularPosts;
 	let filteredPosts: string[] = [];
 
-	const getFilteredPosts = async () => {
+	const getFilteredPosts = async (selected: any) => {
 		const tags = selected.join(',');
 		try {
 			const res = await fetch(`${apiUrl}:3250/filtered?tag=${tags}`, {
@@ -34,8 +33,8 @@
 		}
 	};
 
-	onMount(() => {
-		getFilteredPosts();
+	afterUpdate(() => {
+		getFilteredPosts(selected);
 	});
 </script>
 

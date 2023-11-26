@@ -34,13 +34,13 @@
 	<Register {toggleRegister} />
 	<button
 		on:click={toggleRegister}
-		class="absolute inset-0 bg-bg/70 backdrop-blur z-40 overflow-hidden cursor-auto"
+		class="absolute inset-0 dark:bg-bg/70 bg-bgLight/70 backdrop-blur z-40 overflow-hidden cursor-auto"
 	/>
 {/if}
 {#if showLogin}
 	<Login {toggleLogin} />
 	<button
 		on:click={toggleLogin}
-		class="absolute inset-0 bg-bg/70 backdrop-blur z-40 overflow-hidden cursor-auto"
+		class="absolute inset-0 dark:bg-bg/70 bg-bgLight/70 backdrop-blur z-40 overflow-hidden cursor-auto"
 	/>
 {/if}

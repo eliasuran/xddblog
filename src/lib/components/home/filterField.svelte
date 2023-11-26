@@ -16,6 +16,6 @@
 	<input
 		class="bg-transparent w-full mx-2 border border-secondary p-2 rounded-md outline-none"
 		type="text"
-		placeholder="search posts, tags, authors..."
+		placeholder="search posts, authors..."
 	/>
 </div>
