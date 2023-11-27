@@ -1,36 +1,25 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	const iconColor = '#E82A93';
-	const iconHeight = '20';
-
-	let popup = false;
-	import { slide } from 'svelte/transition';
-
 	export let postData: any;
 </script>
 
-<div
-	role="button"
-	tabindex="0"
-	on:mouseenter={() => (popup = true)}
-	on:mouseleave={() => (popup = false)}
-	class="w-full h-16 bg-primary border border-secondary rounded-md relative flex justify-between items-center px-4 cursor-auto"
+<a
+	href={`/posts/${postData.id}`}
+	class="w-2/3 h-16 hover:h-24 cursor-pointer duration-300 bg-primary border border-secondary rounded-md relative flex items-start gap-2 p-4 overflow-hidden group"
 >
-	<h1 class="text-2xl">{postData.title}</h1>
-	<div class="flex flex-col items-end gap-1">
-		<div class="flex gap-1">
-			{postData.likes}<Icon icon="mdi:heart-outline" color={iconColor} height={iconHeight} />
+	<h1 class="text-2xl w-2/3 line-clamp-1 group-hover:line-clamp-2 group-hover:underline">
+		{postData.title}
+	</h1>
+	<div class="w-1/3 flex flex-col gap-3">
+		<div class="flex">
+			{#each postData.tags as tag}
+				<div class="border-secondary border rounded-md p-1 mr-2 w-auto">
+					{tag}
+				</div>
+			{/each}
 		</div>
-		<div class="flex gap-1">
-			{postData.comments}<Icon icon="mdi:comment-outline" color={iconColor} height={iconHeight} />
+		<div class="flex justify-around">
+			<span>{Math.floor(postData.time / 60)} min read</span>
+			<span>{new Date(postData.date).toLocaleDateString('no-NO')}</span>
 		</div>
 	</div>
-	{#if popup}
-		<a
-			href={`/posts/${postData.id}`}
-			transition:slide={{ duration: 300, axis: 'x' }}
-			class="h-full grid place-items-center bg-xdd absolute top-0 right-0 duration-300 rounded-r-lg"
-			>Click to read!
-		</a>
-	{/if}
-</div>
+</a>

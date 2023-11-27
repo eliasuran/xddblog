@@ -6,8 +6,7 @@ export const load: LayoutServerLoad = async () => {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
-		},
-		credentials: 'include'
+		}
 	});
 	if (res.status === 200) {
 		return await res.json();
