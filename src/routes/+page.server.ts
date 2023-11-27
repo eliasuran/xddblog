@@ -4,14 +4,14 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const latestRes = await fetch(`${apiUrl}:3250/latest`, {
+		const latestRes = await fetch(`${apiUrl}/latest`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		});
 
-		const popularRes = await fetch(`${apiUrl}:3250/popular`, {
+		const popularRes = await fetch(`${apiUrl}/popular`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'

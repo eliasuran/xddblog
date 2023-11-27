@@ -18,7 +18,7 @@
 	const getFilteredPosts = async (selected: any) => {
 		const tags = selected.join(',');
 		try {
-			const res = await fetch(`${apiUrl}:3250/filtered?tag=${tags}`, {
+			const res = await fetch(`${apiUrl}/filtered?tag=${tags}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'

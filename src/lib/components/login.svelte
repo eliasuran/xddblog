@@ -20,16 +20,16 @@
 		usernameError = '';
 		passwordError = '';
 		if (username && password) {
-			const res = await fetch(`${apiUrl}:3250/login`, {
+			const res = await fetch(`${apiUrl}/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				credentials: 'include',
 				body: JSON.stringify({
 					username: username,
 					password: password
-				})
+				}),
+				credentials: 'include'
 			});
 			if (res.status === 200) {
 				console.log(await res.json());

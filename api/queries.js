@@ -81,7 +81,11 @@ export const login = async (req, res) => {
 						data.rows[0].uid,
 						username
 					]);
-					res.set('Set-Cookie', `session=${sessionId}`);
+					res.cookie('session', sessionId, {
+						httpOnly: true,
+						secure: process.env.NODE_ENV === 'production',
+						sameSite: 'none'
+					});
 					res.status(200).send({ status: 'ok', user: data.rows[0] }); // in the end, return user data
 				}
 			} else {

@@ -24,7 +24,7 @@
 		confirmPasswordError = '';
 		if (confirmPassword === password) {
 			if (username && password.length >= 8) {
-				const res = await fetch(`${apiUrl}:3250/register`, {
+				const res = await fetch(`${apiUrl}/register`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
@@ -36,7 +36,7 @@
 				});
 				if (res.status === 200) {
 					console.log(await res.json());
-					window.location.reload;
+					window.location.reload();
 				} else {
 					const data = await res.json();
 					usernameError = data.error; // add more error handling as it is discovered

@@ -2,7 +2,7 @@ import { apiUrl } from '$lib/host';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async () => {
-	const res = await fetch(`${apiUrl}:3250/session`, {
+	const res = await fetch(`${apiUrl}/session`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'

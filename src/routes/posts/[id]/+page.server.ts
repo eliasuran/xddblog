@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }: any) => {
 	try {
-		const res = await fetch(`${apiUrl}:3250/posts/${params.id}`, {
+		const res = await fetch(`${apiUrl}/posts/${params.id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
