@@ -4,9 +4,10 @@ import { v4 } from 'uuid';
 import { parse } from 'cookie';
 
 export const session = async (req, res) => {
+	console.log(req.headers);
 	const cookies = parse(req.headers.cookie || '');
+	console.log('cookies: ', cookies);
 	const userSession = await pool.query('SELECT * FROM session WHERE id = $1', [cookies.session]);
-	console.log(userSession.rows[0]);
 	if (userSession.rowCount > 0) {
 		res.status(200).send(userSession.rows[0]);
 	} else {
@@ -83,7 +84,7 @@ export const login = async (req, res) => {
 					]);
 					res.cookie('session', sessionId, {
 						httpOnly: true,
-						secure: process.env.NODE_ENV === 'production',
+						secure: 'production',
 						sameSite: 'none'
 					});
 					res.status(200).send({ status: 'ok', user: data.rows[0] }); // in the end, return user data
@@ -99,9 +100,10 @@ export const login = async (req, res) => {
 
 // log out user
 export const logout = async (req, res) => {
-	// delete sessions[req.headers.cookie?.split('=')[1]]; // delete the session from the sessions object
+	// TODO: add deleting session from db
+	console.log('xpp');
 	res.set('Set-Cookie', 'session=; expires=Thu, 01 Jan 1969 00:00:00 GMT'); // clear the cookie xdd
-	res.status(200).send('Logged out successfully');
+	res.status(200).send({ message: 'Logged out successfully' });
 };
 
 // get a certain post
