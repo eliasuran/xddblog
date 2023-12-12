@@ -14,7 +14,7 @@
 	tabindex="0"
 	on:mouseenter={() => (popup = true)}
 	on:mouseleave={() => (popup = false)}
-	class={'relative h-4/5 w-[26rem] dark:bg-primary bg-primaryLight rounded-md border dark:border-secondary border-secondaryLight p-6 flex flex-col justify-center gap-6 cursor-auto'}
+	class={'relative h-4/5 w-[26rem] dark:bg-primary bg-primaryLight rounded-md border dark:border-secondary border-secondaryLight p-6 flex flex-col justify-center gap-6 cursor-auto break-words'}
 >
 	<h1 class="text-3xl">{postData.title}</h1>
 	<div class="w-full h-24 line-clamp-4">

@@ -4,6 +4,11 @@
 	import Register from '$lib/components/register.svelte';
 	import Login from '$lib/components/login.svelte';
 	import { apiUrl } from '$lib/host';
+	import type { PageData } from './$types';
+	export let data: PageData;
+
+	let user = data;
+	console.log(user);
 
 	let showRegister = false;
 	let showLogin = false;
@@ -15,21 +20,6 @@
 		showLogin = !showLogin;
 	};
 
-	const getSession = async () => {
-		const res = await fetch(`${apiUrl}/session`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		if (res.status === 200) {
-			return await res.json();
-		} else {
-			console.log('No token:', res.status);
-			return {};
-		}
-	};
-
 	const logOut = async () => {
 		const res = await fetch(`${apiUrl}/logout`, {
 			method: 'POST',
@@ -39,7 +29,7 @@
 			credentials: 'include'
 		});
 		if (res.status === 200) {
-			console.log(await res.json());
+			window.location.reload();
 		}
 	};
 </script>
@@ -48,15 +38,18 @@
 	<nav
 		class="h-20 w-screen dark:text-text text-textLight fixed dark:bg-primary bg-primaryLight border-b dark:border-secondary border-secondaryLight flex justify-around p-8 z-40"
 	>
-		<button on:click={() => getSession()}>hellohello</button>
 		<a href="/">home</a>
+		<a href="/posts/2">post</a>
 		<Lightswitch />
-		<div class="flex gap-2">
-			<button on:click={() => (showRegister = true)}>Register</button>
-			/
-			<button on:click={() => (showLogin = true)}>Login</button>
-		</div>
-		<button on:click={() => logOut()}>Log Out</button>
+		{#if user.user_id}
+			<button on:click={() => logOut()}>Log Out</button>
+		{:else}
+			<div class="flex gap-2">
+				<button on:click={() => (showRegister = true)}>Register</button>
+				/
+				<button on:click={() => (showLogin = true)}>Login</button>
+			</div>
+		{/if}
 	</nav>
 	<slot />
 </div>

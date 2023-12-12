@@ -33,6 +33,7 @@
 			});
 			if (res.status === 200) {
 				console.log(await res.json());
+				window.location.reload();
 			} else {
 				const data = await res.json();
 				passwordError = data.error; // add more error handling as it is discovered

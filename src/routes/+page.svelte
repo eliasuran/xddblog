@@ -38,7 +38,7 @@
 	});
 </script>
 
-<div class="mt-20 p-24 flex flex-col gap-20">
+<div class="mt-20 p-24 flex flex-col gap-20 select-none">
 	<div class="text-xdd text-9xl flex justify-center gap-2">
 		<h1>xddblog</h1>
 		<Icon icon="simple-icons:svelte" />

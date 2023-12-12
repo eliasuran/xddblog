@@ -11,7 +11,7 @@ export const session = async (req, res) => {
 	if (userSession.rowCount > 0) {
 		res.status(200).send(userSession.rows[0]);
 	} else {
-		res.status(400).send({});
+		res.status(201).send({});
 	}
 };
 
@@ -77,6 +77,7 @@ export const login = async (req, res) => {
 					if (existingSession) {
 						await pool.query('DELETE FROM session WHERE user_name = $1', [username]);
 					}
+					// create session with the sessionId, user_id and username
 					await pool.query('INSERT INTO session (id, user_id, user_name) VALUES ($1, $2, $3)', [
 						sessionId,
 						data.rows[0].uid,
@@ -84,8 +85,9 @@ export const login = async (req, res) => {
 					]);
 					res.cookie('session', sessionId, {
 						httpOnly: true,
-						secure: 'production',
-						sameSite: 'none'
+						secure: true,
+						sameSite: 'none',
+						expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
 					});
 					res.status(200).send({ status: 'ok', user: data.rows[0] }); // in the end, return user data
 				}
@@ -101,9 +103,15 @@ export const login = async (req, res) => {
 // log out user
 export const logout = async (req, res) => {
 	// TODO: add deleting session from db
-	console.log('xpp');
-	res.set('Set-Cookie', 'session=; expires=Thu, 01 Jan 1969 00:00:00 GMT'); // clear the cookie xdd
-	res.status(200).send({ message: 'Logged out successfully' });
+	if (req.headers.cookie) {
+		res.setHeader(
+			'Set-Cookie',
+			'session=; HttpOnly; Secure; SameSite=None; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+		);
+		res.status(200).send({ status: 'ok' });
+	} else {
+		res.status(400).send({ error: 'No session found' });
+	}
 };
 
 // get a certain post
