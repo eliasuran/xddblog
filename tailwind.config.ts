@@ -13,6 +13,7 @@ const config = {
 		extend: {
 			colors: {
 				xdd: '#E82A93',
+
 				bg: '#131316',
 				primary: '#22252F',
 				secondary: '#343746',

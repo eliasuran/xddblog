@@ -23,7 +23,7 @@
 		selected = selected;
 	}}
 	class={`${
-		selected.includes(text) && 'bg-secondary'
-	} border-r border-secondary p-5 flex gap-2 hover:bg-secondary`}
+		selected.includes(text) && 'dark:bg-secondary bg-secondaryLight'
+	} border-r dark:border-secondary border-secondaryLight p-5 flex gap-2 dark:hover:bg-secondary hover:bg-secondaryLight`}
 	>{text} <Icon {icon} height={iconHeight} color={iconColor} /></button
 >

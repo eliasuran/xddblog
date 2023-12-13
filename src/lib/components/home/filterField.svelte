@@ -4,7 +4,7 @@
 </script>
 
 <div
-	class="w-full h-16 bg-primary border border-secondary rounded-md flex items-center justify-between overflow-hidden"
+	class="w-full h-16 dark:bg-primary bg-primaryLight border dark:border-secondary border-secondaryLight rounded-md flex items-center justify-between overflow-hidden"
 >
 	<div class="flex">
 		<Filter {selected} text={'new'} icon={'mdi:lightning-bolt-outline'} />
@@ -14,7 +14,7 @@
 		<Filter {selected} text={'svelte'} icon={'simple-icons:svelte'} />
 	</div>
 	<input
-		class="bg-transparent w-full mx-2 border border-secondary p-2 rounded-md outline-none"
+		class="bg-transparent w-full mx-2 border dark:border-secondary border-secondaryLight p-2 rounded-md outline-none"
 		type="text"
 		placeholder="search posts, authors..."
 	/>

@@ -9,14 +9,15 @@
 	let popup = false;
 </script>
 
-<div
+<a
+	href={`posts/${postData.id}`}
 	role="button"
 	tabindex="0"
 	on:mouseenter={() => (popup = true)}
 	on:mouseleave={() => (popup = false)}
-	class={'relative h-4/5 w-[26rem] dark:bg-primary bg-primaryLight rounded-md border dark:border-secondary border-secondaryLight p-6 flex flex-col justify-center gap-6 cursor-auto break-words'}
+	class={'relative h-4/5 w-[26rem] dark:bg-primary bg-primaryLight rounded-md border dark:border-secondary border-secondaryLight p-6 flex flex-col justify-center gap-6 break-words cursor-pointer group'}
 >
-	<h1 class="text-3xl">{postData.title}</h1>
+	<h1 class="text-3xl group-hover:underline">{postData.title}</h1>
 	<div class="w-full h-24 line-clamp-4">
 		<span>{postData.content} </span>
 	</div>
@@ -41,11 +42,11 @@
 		</div>
 	</div>
 	{#if popup}
-		<a
-			href={`posts/${postData.id}`}
+		<div
 			transition:slide={{ duration: 300, axis: 'y' }}
 			class="w-full h-20 grid place-items-center bg-xdd rounded-b-lg absolute left-0 bottom-0 duration-300 translate-y-full"
-			>Click to read!
-		</a>
+		>
+			Click to read!
+		</div>
 	{/if}
-</div>
+</a>

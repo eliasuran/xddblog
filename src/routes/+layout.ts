@@ -1,8 +1,9 @@
+import { apiUrl } from '$lib/host';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (window) => {
 	try {
-		const res = await window.fetch(`http://127.0.0.1:3250/session`, {
+		const res = await window.fetch(`${apiUrl}/session`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'

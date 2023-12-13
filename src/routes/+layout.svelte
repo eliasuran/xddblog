@@ -8,7 +8,6 @@
 	export let data: PageData;
 
 	let user = data;
-	console.log(user);
 
 	let showRegister = false;
 	let showLogin = false;
@@ -38,7 +37,8 @@
 	<nav
 		class="h-20 w-screen dark:text-text text-textLight fixed dark:bg-primary bg-primaryLight border-b dark:border-secondary border-secondaryLight flex justify-around p-8 z-40"
 	>
-		<a href="/">home</a>
+		<a href="/" class="text-3xl font-bold">home</a>
+		<div>Hi, <a class="hover:underline" href={`/users/${user.user_name}`}>{user.user_name}</a></div>
 		<a href="/posts/2">post</a>
 		<Lightswitch />
 		{#if user.user_id}
