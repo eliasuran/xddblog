@@ -184,3 +184,9 @@ export const getFilteredPosts = (req, res) => {
 		}
 	);
 };
+
+export const getLatestUserPosts = (req, res) => {
+	const user = req.query.user;
+};
+
+export const getPopularUserPosts = (req, res) => {};

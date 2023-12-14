@@ -9,25 +9,22 @@ export default {
       title: 'Title',
     },
     {
+      name: 'image',
+      type: 'image',
+      title: 'Front Image',
+    },
+    {
       name: 'body',
-      type: 'string',
+      type: 'array',
       title: 'Body',
+      of: [{type: 'block'}],
     },
     {
       name: 'tags',
       type: 'array',
       title: 'Tags',
-      of: [
-        {
-          type: 'string',
-          name: 'tag',
-          fields: [
-            {type: 'string', name: 'react'},
-            {type: 'string', name: 'svelte'},
-            {type: 'string', name: 'vue'},
-          ],
-        },
-      ],
+      of: [{type: 'string'}],
+      options: {list: ['react', 'svelte', 'vue']},
     },
   ],
 }

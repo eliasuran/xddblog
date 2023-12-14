@@ -14,8 +14,8 @@
 		>
 	</div>
 	<div class="relative text-5xl text-xdd flex min-h-screen">
-		<h2 class="absolute -top-9 left-14 p-2 dark:bg-bg bg-bgLight">popular</h2>
 		<h2 class="absolute -top-9 right-14 p-2 dark:bg-bg bg-bgLight">latest</h2>
+		<h2 class="absolute -top-9 left-14 p-2 dark:bg-bg bg-bgLight">popular</h2>
 		<div class="bg-red-900" />
 	</div>
 </div>
