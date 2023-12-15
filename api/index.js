@@ -11,8 +11,7 @@ import {
 	getLatestPosts,
 	getPopularPosts,
 	getFilteredPosts,
-	getLatestUserPosts,
-	getPopularUserPosts
+	getUserPosts
 } from './queries.js';
 
 const app = express();
@@ -32,8 +31,7 @@ app.get('/posts/:id', getPost);
 app.get('/latest', getLatestPosts);
 app.get('/popular', getPopularPosts);
 app.get('/filtered', getFilteredPosts);
-app.get('/users/latest', getLatestUserPosts);
-app.get('/users/popular', getPopularUserPosts);
+app.get('/:user/posts', getUserPosts);
 
 app.listen(port, host, () => {
 	console.log(`Running on ${host}:${port}`);

@@ -4,9 +4,7 @@ import { v4 } from 'uuid';
 import { parse } from 'cookie';
 
 export const session = async (req, res) => {
-	console.log(req.headers);
 	const cookies = parse(req.headers.cookie || '');
-	console.log('cookies: ', cookies);
 	const userSession = await pool.query('SELECT * FROM session WHERE id = $1', [cookies.session]);
 	if (userSession.rowCount > 0) {
 		res.status(200).send(userSession.rows[0]);
@@ -185,8 +183,17 @@ export const getFilteredPosts = (req, res) => {
 	);
 };
 
-export const getLatestUserPosts = (req, res) => {
-	const user = req.query.user;
+export const getUserPosts = (req, res) => {
+	const user = req.params.user;
+	pool.query(
+		'SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid WHERE users.name = $1 ORDER BY likes DESC',
+		[user],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			console.log(results.rows);
+			res.status(200).json(results.rows);
+		}
+	);
 };
-
-export const getPopularUserPosts = (req, res) => {};
