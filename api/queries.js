@@ -183,17 +183,23 @@ export const getFilteredPosts = (req, res) => {
 	);
 };
 
-export const getUserPosts = (req, res) => {
+export const getUserPosts = async (req, res) => {
 	const user = req.params.user;
-	pool.query(
-		'SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid WHERE users.name = $1 ORDER BY likes DESC',
-		[user],
-		(error, results) => {
-			if (error) {
-				throw error;
+	const data = await pool.query('SELECT users.name, users.bio FROM users WHERE users.name = $1', [
+		user
+	]);
+	if (data.rowCount === 0) {
+		return res.status(404).send({ error: 'User not found' });
+	} else {
+		pool.query(
+			'SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid WHERE users.name = $1',
+			[user],
+			(error, results) => {
+				if (error) {
+					throw error;
+				}
+				res.status(200).json({ user: data.rows[0], userPosts: results.rows });
 			}
-			console.log(results.rows);
-			res.status(200).json(results.rows);
-		}
-	);
+		);
+	}
 };
