@@ -4,7 +4,7 @@
 </script>
 
 <div
-	class="w-full h-16 dark:bg-primary bg-primaryLight border dark:border-secondary border-secondaryLight rounded-md flex items-center justify-between overflow-hidden"
+	class="w-full h-16 dark:bg-primary bg-primaryLight border dark:border-secondary border-primaryLight rounded-md flex items-center justify-between overflow-hidden"
 >
 	<div class="flex">
 		<Filter {selected} text={'new'} icon={'mdi:lightning-bolt-outline'} />

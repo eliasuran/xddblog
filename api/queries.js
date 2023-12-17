@@ -190,16 +190,15 @@ export const getUserPosts = async (req, res) => {
 	]);
 	if (data.rowCount === 0) {
 		return res.status(404).send({ error: 'User not found' });
-	} else {
-		pool.query(
-			'SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid WHERE users.name = $1',
-			[user],
-			(error, results) => {
-				if (error) {
-					throw error;
-				}
-				res.status(200).json({ user: data.rows[0], userPosts: results.rows });
-			}
-		);
 	}
+	pool.query(
+		'SELECT posts.*, users.name as author_username FROM posts JOIN users ON posts.author = users.uid WHERE users.name = $1',
+		[user],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			res.status(200).json({ user: data.rows[0], userPosts: results.rows });
+		}
+	);
 };
