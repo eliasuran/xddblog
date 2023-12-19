@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { apiUrl } from '$lib/host.js';
-	import { afterUpdate } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import Post from '$lib/components/home/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
@@ -10,31 +8,13 @@
 
 	let selected = ['svelte'];
 
-	const latestPostsData = data.props.latestPosts;
-	const popularPostsData = data.props.popularPosts;
-	let filteredPosts: string[] = [];
-
-	const getFilteredPosts = async (selected: any) => {
-		const tags = selected.join(',');
-		try {
-			const res = await fetch(`${apiUrl}/filtered?tag=${tags}`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-
-			if (res.status === 200) {
-				filteredPosts = await res.json();
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	afterUpdate(() => {
-		getFilteredPosts(selected);
-	});
+	interface Post {
+		id: string;
+		likes: number;
+		date: Date;
+	}
+	const posts: Post[] = data.posts.slice();
+	const popular: Post[] = posts.slice().sort((a: Post, b: Post) => b.likes - a.likes);
 </script>
 
 <div class="mt-20 p-24 flex flex-col gap-20 select-none">
@@ -46,21 +26,25 @@
 		<h1 class="absolute -top-7 left-14 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">
 			latest posts
 		</h1>
-		{#each latestPostsData.slice(0, 2) as postData (postData.id)}<Post {postData} />{/each}
+		{#each posts.slice(0, 2) as postData (postData.id)}<div class="w-[26rem]">
+				<Post {postData} />
+			</div>{/each}
 	</div>
 
 	<div class="relative border-t-4 border-xdd w-full h-96 pt-6 flex justify-around items-center">
 		<h1 class="absolute -top-7 right-14 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">
 			popular this week
 		</h1>
-		{#each popularPostsData as postData (postData.id)}<Post {postData} />{/each}
+		{#each popular.splice(0, 2) as postData (postData.id)}<div class="w-[26rem]">
+				<Post {postData} />
+			</div>{/each}
 	</div>
 
 	<div class="relative border-t-4 border-xdd w-full pt-16 flex flex-col gap-8 items-center">
 		<h1 class="absolute -top-7 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">explore</h1>
 		<FilterField {selected} />
 		<div class="flex flex-col gap-4 w-full">
-			{#each filteredPosts as postData} <FilterResults {postData} /> {/each}
+			{#each posts as postData} <FilterResults {postData} /> {/each}
 		</div>
 	</div>
 </div>

@@ -4,24 +4,16 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const latestRes = await fetch(`${apiUrl}/latest`, {
+		const res = await fetch(`${apiUrl}/posts`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		});
 
-		const popularRes = await fetch(`${apiUrl}/popular`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (latestRes.ok && popularRes.ok) {
-			const latestPosts = await latestRes.json();
-			const popularPosts = await popularRes.json();
-			return { props: { latestPosts, popularPosts } };
+		if (res.status === 200) {
+			const posts = await res.json();
+			return { posts: posts };
 		}
 
 		throw error(404, 'Not found');

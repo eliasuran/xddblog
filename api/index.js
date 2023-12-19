@@ -8,8 +8,7 @@ import {
 	login,
 	logout,
 	getPost,
-	getLatestPosts,
-	getPopularPosts,
+	getAllPosts,
 	getFilteredPosts,
 	getUserPosts
 } from './queries.js';
@@ -28,8 +27,7 @@ app.post('/register', register);
 app.post('/login', login);
 app.post('/logout', logout);
 app.get('/posts/:id', getPost);
-app.get('/latest', getLatestPosts);
-app.get('/popular', getPopularPosts);
+app.get('/posts', getAllPosts);
 app.get('/filtered', getFilteredPosts);
 app.get('/:user/posts', getUserPosts);
 
