@@ -1,20 +1,16 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import Post from '$lib/components/home/post.svelte';
+	import Post from '$lib/components/home/post/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
 	import FilterResults from '$lib/components/home/filterResults.svelte';
+	import type { PostType } from '$lib/types/post.ts';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
 	let selected = ['svelte'];
 
-	interface Post {
-		id: string;
-		likes: number;
-		date: Date;
-	}
-	const posts: Post[] = data.posts.slice();
-	const popular: Post[] = posts.slice().sort((a: Post, b: Post) => b.likes - a.likes);
+	const posts: PostType[] = data.posts.slice();
+	const popular: PostType[] = posts.slice().sort((a: PostType, b: PostType) => b.likes - a.likes);
 </script>
 
 <div class="mt-20 p-24 flex flex-col gap-20 select-none">
@@ -44,7 +40,7 @@
 		<h1 class="absolute -top-7 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">explore</h1>
 		<FilterField {selected} />
 		<div class="flex flex-col gap-4 w-full">
-			{#each posts as postData} <FilterResults {postData} /> {/each}
+			{#each posts.slice(0, 8) as postData} <FilterResults {postData} /> {/each}
 		</div>
 	</div>
 </div>

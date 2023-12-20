@@ -10,8 +10,8 @@
 		{postData.title}
 	</h1>
 	<div class="w-1/3 flex flex-col gap-3">
-		<div class="flex">
-			{#if postData.tags}
+		{#if postData.tags}
+			<div class="flex">
 				{#each postData.tags as tag}
 					<div
 						class="dark:border-secondary border-secondaryLight border rounded-md p-1 mr-2 w-auto"
@@ -19,8 +19,8 @@
 						{tag}
 					</div>
 				{/each}
-			{/if}
-		</div>
+			</div>
+		{/if}
 		<div class="flex justify-around">
 			<span>{Math.floor(postData.time / 60)} min read</span>
 			<span>{new Date(postData.date).toLocaleDateString('no-NO')}</span>

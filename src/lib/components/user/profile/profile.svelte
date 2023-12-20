@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Post from '$lib/components/home/post.svelte';
+	import Post from '$lib/components/home/post/post.svelte';
 
 	import Icon from '@iconify/svelte';
 	const iconColor = '#E82A93';
@@ -81,7 +81,9 @@
 			</div>
 			<div class="flex flex-col gap-14">
 				{#each userPosts.slice(0, 3) as postData}<Post {postData} />{/each}
-				<a class="text-blue-400 self-end" href={`/users/${data.userInfo.name}`}>See more..</a>
+				<a class="text-blue-400 self-end" href={`/users/${data.userInfo.name}?tab=Posts`}
+					>See more..</a
+				>
 			</div>
 		</div>
 	</div>
