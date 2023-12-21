@@ -152,24 +152,6 @@ export const getAllPosts = (req, res) => [
 	)
 ];
 
-// get posts based on current filter
-export const getFilteredPosts = (req, res) => {
-	const tags = req.query.tag.split(',');
-	pool.query(
-		`SELECT posts.*, users.name as author_username FROM posts 
-    JOIN users ON posts.author = users.uid 
-    WHERE posts.tags @> $1::text[] 
-    ORDER BY date DESC`,
-		[tags],
-		(error, results) => {
-			if (error) {
-				throw error;
-			}
-			res.status(200).json(results.rows);
-		}
-	);
-};
-
 export const getUserPosts = async (req, res) => {
 	const user = req.params.user;
 	const data = await pool.query('SELECT users.name, users.bio FROM users WHERE users.name = $1', [

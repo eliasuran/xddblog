@@ -3,14 +3,23 @@
 	import Post from '$lib/components/home/post/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
 	import FilterResults from '$lib/components/home/filterResults.svelte';
-	import type { PostType } from '$lib/types/post.ts';
+
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	let selected = ['svelte'];
-
+	import type { PostType } from '$lib/types/post.ts';
 	const posts: PostType[] = data.posts.slice();
 	const popular: PostType[] = posts.slice().sort((a: PostType, b: PostType) => b.likes - a.likes);
+
+	let selected: string[] = [];
+
+	const addFilter = (filter: any) => {
+		if (selected.includes(filter)) {
+			selected = selected.filter((item) => item !== filter);
+		} else {
+			selected = [...selected, filter];
+		}
+	};
 </script>
 
 <div class="mt-20 p-24 flex flex-col gap-20 select-none">
@@ -38,9 +47,19 @@
 
 	<div class="relative border-t-4 border-xdd w-full pt-16 flex flex-col gap-8 items-center">
 		<h1 class="absolute -top-7 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">explore</h1>
-		<FilterField {selected} />
+		<FilterField {selected} {addFilter} />
 		<div class="flex flex-col gap-4 w-full">
-			{#each posts.slice(0, 8) as postData} <FilterResults {postData} /> {/each}
+			{#if selected.length === 0}
+				{#each posts.slice(0, 8) as postData}
+					<FilterResults {postData} />
+				{/each}
+			{:else}
+				{#each posts.slice(0, 8) as postData}
+					{#if postData.tags?.some((tag) => selected.includes(tag))}<FilterResults
+							{postData}
+						/>{/if}
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>

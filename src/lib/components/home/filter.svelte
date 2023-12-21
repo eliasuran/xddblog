@@ -7,20 +7,13 @@
 	const iconColor = '#E82A93';
 	const iconHeight = 25;
 
+	export let addFilter: (filter: string) => void;
 	export let selected: string[];
 </script>
 
 <button
 	on:click={() => {
-		if (selected.includes(text)) {
-			const index = selected.indexOf(text);
-			if (index > -1) {
-				selected.splice(index, 1);
-			}
-		} else {
-			selected.push(text);
-		}
-		selected = selected;
+		addFilter(text);
 	}}
 	class={`${
 		selected.includes(text) && 'dark:bg-secondary bg-secondaryLight'
