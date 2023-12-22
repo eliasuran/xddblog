@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
 	import Post from '$lib/components/home/post/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
@@ -12,16 +13,14 @@
 	const posts: PostType[] = data.posts.slice();
 	const popular: PostType[] = posts.slice().sort((a: PostType, b: PostType) => b.likes - a.likes);
 
-	let selected: string[] = $page.url.searchParams.get('filter')?.split(',') ?? [];
-	let search: string = $page.url.searchParams.get('search') ?? '';
+	$: params = ($page.url.searchParams.get('filter') || '').split(',').filter(Boolean);
+	$: filtered = posts.filter((post: PostType) => {
+		return params.every((param: string) => {
+			return post.tags?.includes(param);
+		});
+	});
 
-	const addFilter = (filter: any) => {
-		if (selected.includes(filter)) {
-			selected = selected.filter((item) => item !== filter);
-		} else {
-			selected = [...selected, filter];
-		}
-	};
+	let search: string = $page.url.searchParams.get('search') ?? '';
 </script>
 
 <div class="mt-20 p-24 flex flex-col gap-20 select-none">
@@ -49,19 +48,11 @@
 
 	<div class="relative border-t-4 border-xdd w-full pt-16 flex flex-col gap-8 items-center">
 		<h1 class="absolute -top-7 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">explore</h1>
-		<FilterField {selected} {addFilter} />
+		<FilterField />
 		<div class="flex flex-col gap-4 w-full">
-			{#if selected.length === 0}
-				{#each posts.slice(0, 8) as postData}
-					<FilterResults {postData} />
-				{/each}
-			{:else}
-				{#each posts.slice(0, 8) as postData}
-					{#if postData.tags?.some((tag) => selected.includes(tag))}<FilterResults
-							{postData}
-						/>{/if}
-				{/each}
-			{/if}
+			{#each filtered.slice(0, 8) as postData}
+				<FilterResults {postData} />
+			{/each}
 		</div>
 	</div>
 </div>
