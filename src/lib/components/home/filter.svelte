@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
 	export let text: string;
@@ -8,7 +9,7 @@
 	const iconHeight = 25;
 
 	export let addFilter: (filter: string) => void;
-	export let selected: string[];
+	const params = $page.url.searchParams.get('filter');
 </script>
 
 <button
@@ -16,7 +17,7 @@
 		addFilter(text);
 	}}
 	class={`${
-		selected.includes(text) && 'dark:bg-secondary bg-secondaryLight'
+		params && params.includes(text) && 'dark:bg-secondary bg-secondaryLight'
 	} border-r dark:border-secondary border-secondaryLight p-5 flex gap-2 dark:hover:bg-secondary hover:bg-secondaryLight`}
 	>{text} <Icon {icon} height={iconHeight} color={iconColor} /></button
 >

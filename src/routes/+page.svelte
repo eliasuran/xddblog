@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import Post from '$lib/components/home/post/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
@@ -11,7 +12,8 @@
 	const posts: PostType[] = data.posts.slice();
 	const popular: PostType[] = posts.slice().sort((a: PostType, b: PostType) => b.likes - a.likes);
 
-	let selected: string[] = [];
+	let selected: string[] = $page.url.searchParams.get('filter')?.split(',') ?? [];
+	let search: string = $page.url.searchParams.get('search') ?? '';
 
 	const addFilter = (filter: any) => {
 		if (selected.includes(filter)) {

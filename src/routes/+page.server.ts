@@ -3,7 +3,6 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	let selected: string[] = [];
 	try {
 		const res = await fetch(`${apiUrl}/posts`, {
 			method: 'GET',
@@ -14,7 +13,7 @@ export const load: PageServerLoad = async () => {
 
 		if (res.status === 200) {
 			const posts = await res.json();
-			return { posts: posts, selected: selected };
+			return { posts: posts };
 		}
 
 		throw error(404, 'Not found');
