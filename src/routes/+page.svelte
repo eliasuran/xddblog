@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
 	import Post from '$lib/components/home/post/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';

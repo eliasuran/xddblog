@@ -9,10 +9,15 @@
 	const iconHeight = 25;
 
 	$: params = ($page.url.searchParams.get('filter') || '').split(',').filter(Boolean);
+	const tab = $page.url.searchParams.get('tab');
 </script>
 
 <a
-	href={params?.includes(text)
+	href={tab
+		? params?.includes(text)
+			? `?tab=${tab}&filter=${params.filter((item) => item !== text)}`
+			: `?tab=${tab}&filter=${[...params, text]}`
+		: params?.includes(text)
 		? `?filter=${params.filter((item) => item !== text)}`
 		: `?filter=${[...params, text]}`}
 	class={`${
