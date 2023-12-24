@@ -7,4 +7,5 @@ export interface PostType {
 	time: number;
 	words: number;
 	tags: string[];
+	author_username: string;
 }

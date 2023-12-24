@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Icon from '@iconify/svelte';
+	import Header from '$lib/components/home/header.svelte';
 	import Post from '$lib/components/home/post/post.svelte';
 	import FilterField from '$lib/components/home/filterField.svelte';
 	import FilterResults from '$lib/components/home/filterResults.svelte';
@@ -19,14 +19,25 @@
 		});
 	});
 
-	let search: string = $page.url.searchParams.get('search') ?? '';
+	const search = (e: any) => {
+		if (e.target.value === '') {
+			filtered = posts.filter((post: PostType) => {
+				return params.every((param: string) => {
+					return post.tags?.includes(param);
+				});
+			});
+		}
+		filtered = filtered.filter((post: PostType) => {
+			return (
+				post.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+				post.author_username.toLowerCase().includes(e.target.value.toLowerCase())
+			);
+		});
+	};
 </script>
 
 <div class="mt-20 p-24 flex flex-col gap-20 select-none">
-	<div class="text-xdd text-9xl flex justify-center gap-2">
-		<h1>xddblog</h1>
-		<Icon icon="simple-icons:svelte" />
-	</div>
+	<Header />
 	<div class="relative border-t-4 border-xdd w-full h-96 pt-6 flex justify-around items-center">
 		<h1 class="absolute -top-7 left-14 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">
 			latest posts
@@ -47,7 +58,7 @@
 
 	<div class="relative border-t-4 border-xdd w-full pt-16 flex flex-col gap-8 items-center">
 		<h1 class="absolute -top-7 text-5xl dark:bg-bg bg-bgLight px-4 text-xdd">explore</h1>
-		<FilterField />
+		<FilterField {search} />
 		<div class="flex flex-col gap-4 w-full">
 			{#each filtered.slice(0, 8) as postData}
 				<FilterResults {postData} />

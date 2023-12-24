@@ -11,5 +11,4 @@
 			</div>
 		{/each}
 	</div>
-	<div class="w-[2px] bg-secondary" />
 {/if}

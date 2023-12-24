@@ -23,6 +23,7 @@
 	<Line />
 	<div class="flex gap-2">
 		<Tags {postData} />
+		<div class="w-[2px] dark:bg-secondary bg-secondaryLight" />
 		<Interactions {postData} />
 	</div>
 	<Line />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Filter from './filter.svelte';
+	export let search: (e: any) => void;
 </script>
 
 <div
@@ -11,6 +12,7 @@
 		<Filter text={'svelte'} icon={'simple-icons:svelte'} />
 	</div>
 	<input
+		on:input={(e) => search(e)}
 		class="bg-transparent w-full mx-2 border dark:border-secondary border-secondaryLight p-2 rounded-md outline-none"
 		type="text"
 		placeholder="search posts, authors..."

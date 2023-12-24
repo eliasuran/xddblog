@@ -12,10 +12,26 @@
 			return post.tags?.includes(param);
 		});
 	});
+
+	const search = (e: any) => {
+		if (e.target.value === '') {
+			filtered = $page.data.posts.slice().filter((post: PostType) => {
+				return params.every((param: string) => {
+					return post.tags?.includes(param);
+				});
+			});
+		}
+		filtered = filtered.filter((post: PostType) => {
+			return (
+				post.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+				post.author_username.toLowerCase().includes(e.target.value.toLowerCase())
+			);
+		});
+	};
 </script>
 
 <div class="mt-20 p-24 flex flex-col gap-4">
-	<FilterField />
+	<FilterField {search} />
 	<div class="flex flex-col gap-4">
 		{#each filtered as postData}<FilterResults {postData} />{/each}
 	</div>
