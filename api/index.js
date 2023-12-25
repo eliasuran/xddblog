@@ -9,7 +9,8 @@ import {
 	logout,
 	getPost,
 	getAllPosts,
-	getUserPosts
+	getUserPosts,
+	getSettings
 } from './queries.js';
 
 const app = express();
@@ -28,6 +29,7 @@ app.post('/logout', logout);
 app.get('/posts/:id', getPost);
 app.get('/posts', getAllPosts);
 app.get('/:user/posts', getUserPosts);
+app.get('/:user/settings', getSettings);
 
 app.listen(port, host, () => {
 	console.log(`Running on ${host}:${port}`);

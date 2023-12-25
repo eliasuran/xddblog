@@ -20,7 +20,8 @@
 	});
 
 	const search = (e: any) => {
-		if (e.target.value === '') {
+		const q = e.target.value;
+		if (q === '') {
 			filtered = posts.filter((post: PostType) => {
 				return params.every((param: string) => {
 					return post.tags?.includes(param);
@@ -29,8 +30,8 @@
 		}
 		filtered = filtered.filter((post: PostType) => {
 			return (
-				post.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
-				post.author_username.toLowerCase().includes(e.target.value.toLowerCase())
+				post.title.toLowerCase().includes(q.toLowerCase()) ||
+				post.author_username.toLowerCase().includes(q.toLowerCase())
 			);
 		});
 	};

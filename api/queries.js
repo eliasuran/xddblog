@@ -171,3 +171,12 @@ export const getUserPosts = async (req, res) => {
 		}
 	);
 };
+
+export const getSettings = async (req, res) => {
+	const checkingUser = req.params.user;
+	const loggedInUser = req.query.user;
+	if (checkingUser !== loggedInUser) {
+		return res.status(401).send({ error: 'Unauthorized' });
+	}
+	return res.status(200).send({ user: loggedInUser });
+};

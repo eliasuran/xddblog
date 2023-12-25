@@ -32,8 +32,10 @@
 		<!-- make post button just here temporarily -->
 		<div class="flex flex-col gap-2">
 			{#if owner}
-				<button class="rounded-md bg-xdd p-2 px-4 text-xl flex gap-2 items-center"
-					>Settings<Icon icon="solar:settings-outline" height={iconHeight} /></button
+				<a
+					href={`/settings/${data.user_name}`}
+					class="rounded-md bg-xdd p-2 px-4 text-xl flex gap-2 items-center"
+					>Settings<Icon icon="solar:settings-outline" height={iconHeight} /></a
 				>
 			{/if}
 			<button class="rounded-md bg-xdd p-2 px-4 text-xl flex gap-2 items-center"
