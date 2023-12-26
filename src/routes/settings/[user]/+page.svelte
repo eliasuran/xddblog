@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Nav from '$lib/components/settings/nav.svelte';
+	import PublicProfile from '$lib/components/settings/publicProfile.svelte';
 	import { page } from '$app/stores';
 	import { apiUrl } from '$lib/host';
 	export let data;
@@ -26,6 +28,8 @@
 	};
 
 	getSettings();
+
+	$: param = $page.url.searchParams.get('tab');
 </script>
 
 <div class="mt-16 flex flex-col p-5">
@@ -33,8 +37,10 @@
 		<div class="border-4 border-xdd h-full aspect-square rounded-md" />
 		<h1 class="self-end text-4xl">{settings.user}</h1>
 	</div>
-	<div class="flex min-h-screen">
-		<div class="w-72 bg-red-900" />
-		<div />
+	<div class="flex gap-8 w-full min-h-screen">
+		<Nav />
+		<div class="w-3/4">
+			{#if param === 'public-profile'}<PublicProfile />{/if}
+		</div>
 	</div>
 </div>
