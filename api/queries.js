@@ -178,5 +178,27 @@ export const getSettings = async (req, res) => {
 	if (checkingUser !== loggedInUser) {
 		return res.status(401).send({ error: 'Unauthorized' });
 	}
-	return res.status(200).send({ user: loggedInUser });
+	pool.query(
+		'SELECT users.name, users.display_name FROM users WHERE name = $1',
+		[loggedInUser],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			return res.status(200).send(results.rows[0]);
+		}
+	);
+};
+
+export const getPublicProfileSettings = async (req, res) => {
+	pool.query(
+		'SELECT users.display_name, users.bio FROM users WHERE name = $1',
+		[req.params.user],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			return res.status(200).send(results.rows[0]);
+		}
+	);
 };

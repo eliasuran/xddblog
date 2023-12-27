@@ -3,20 +3,18 @@
 	import PublicProfile from '$lib/components/settings/publicProfile.svelte';
 	import { page } from '$app/stores';
 	import { apiUrl } from '$lib/host';
+	import { onMount } from 'svelte';
 	export let data;
 
-	interface settings {
-		user: string;
-	}
-
-	let settings: settings = { user: 'Loading..' };
+	import type { NameSettings } from '$lib/types/nameSettings.ts';
+	let user: NameSettings = { display_name: '', name: 'Loading..' };
 	const getSettings = async () => {
 		try {
 			const res = await fetch(
 				`${apiUrl}/${$page.url.pathname.split('/')[2]}/settings?user=${data.user_name}`
 			);
 			if (res.status === 200) {
-				settings = await res.json();
+				user = await res.json();
 			} else if (res.status === 401) {
 				window.location.href = '/';
 			} else {
@@ -27,7 +25,9 @@
 		}
 	};
 
-	getSettings();
+	onMount(() => {
+		getSettings();
+	});
 
 	$: param = $page.url.searchParams.get('tab');
 </script>
@@ -35,7 +35,12 @@
 <div class="mt-16 flex flex-col p-5">
 	<div class="w-full h-24 flex items-center gap-4 my-6">
 		<div class="border-4 border-xdd h-full aspect-square rounded-md" />
-		<h1 class="self-end text-4xl">{settings.user}</h1>
+		<div class="self-end flex flex-col">
+			{#if user.display_name}
+				<h1 class="text-3xl">{user.display_name}</h1>
+			{/if}
+			<h1 class="text-2xl text-xdd">@{user.name}</h1>
+		</div>
 	</div>
 	<div class="flex gap-8 w-full min-h-screen">
 		<Nav />

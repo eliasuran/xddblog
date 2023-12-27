@@ -10,7 +10,8 @@ import {
 	getPost,
 	getAllPosts,
 	getUserPosts,
-	getSettings
+	getSettings,
+	getPublicProfileSettings
 } from './queries.js';
 
 const app = express();
@@ -21,15 +22,22 @@ app.use(bodyParser.json());
 const host = '127.0.0.1';
 const port = 3250;
 
-app.get('/session', session);
 app.get('/users', getUsers);
+
+// login register and session management
+app.get('/session', session);
 app.post('/register', register);
 app.post('/login', login);
 app.post('/logout', logout);
+
+// anything reladed to posts
 app.get('/posts/:id', getPost);
 app.get('/posts', getAllPosts);
 app.get('/:user/posts', getUserPosts);
+
+// get various settings
 app.get('/:user/settings', getSettings);
+app.get('/:user/settings/public-profile', getPublicProfileSettings);
 
 app.listen(port, host, () => {
 	console.log(`Running on ${host}:${port}`);
