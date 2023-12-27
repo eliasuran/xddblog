@@ -202,3 +202,16 @@ export const getPublicProfileSettings = async (req, res) => {
 		}
 	);
 };
+
+export const getAccountSettings = async (req, res) => {
+	pool.query(
+		'SELECT users.name, users.visibility FROM users WHERE name = $1',
+		[req.params.user],
+		(error, results) => {
+			if (error) {
+				throw error;
+			}
+			return res.status(200).send(results.rows[0]);
+		}
+	);
+};

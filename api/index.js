@@ -11,7 +11,8 @@ import {
 	getAllPosts,
 	getUserPosts,
 	getSettings,
-	getPublicProfileSettings
+	getPublicProfileSettings,
+	getAccountSettings
 } from './queries.js';
 
 const app = express();
@@ -38,6 +39,7 @@ app.get('/:user/posts', getUserPosts);
 // get various settings
 app.get('/:user/settings', getSettings);
 app.get('/:user/settings/public-profile', getPublicProfileSettings);
+app.get('/:user/settings/account', getAccountSettings);
 
 app.listen(port, host, () => {
 	console.log(`Running on ${host}:${port}`);

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Nav from '$lib/components/settings/nav.svelte';
-	import PublicProfile from '$lib/components/settings/publicProfile.svelte';
+	import PublicProfile from '$lib/components/settings/tabs/publicProfile.svelte';
+	import Account from '$lib/components/settings/tabs/account.svelte';
 	import { page } from '$app/stores';
 	import { apiUrl } from '$lib/host';
 	import { onMount } from 'svelte';
@@ -45,7 +46,11 @@
 	<div class="flex gap-8 w-full min-h-screen">
 		<Nav />
 		<div class="w-3/4">
-			{#if param === 'public-profile'}<PublicProfile />{/if}
+			{#if param === 'public-profile'}
+				<PublicProfile />
+			{:else if param === 'account'}
+				<Account />
+			{/if}
 		</div>
 	</div>
 </div>
