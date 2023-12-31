@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { apiUrl } from '$lib/host';
 	import { page } from '$app/stores';
 	import { getSettings } from '$lib/utils/getSettings';
 	import { onMount } from 'svelte';
@@ -15,8 +16,25 @@
 		settings = await getSettings($page.data.user_name, $page.url.searchParams.get('tab') || '');
 	});
 
-	const save = () => {
-		console.log(settings);
+	const save = async () => {
+		try {
+			console.log(settings);
+			const res = await fetch(`${apiUrl}/${$page.data.user_name}/settings`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					keys: Object.keys(settings),
+					values: Object.values(settings)
+				})
+			});
+			if (res.status === 200) {
+				console.log('saved');
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 </script>
 

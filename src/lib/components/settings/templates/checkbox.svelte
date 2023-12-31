@@ -3,6 +3,8 @@
 	export let value: boolean;
 	export let desc: string = '';
 	const name = label.toLowerCase().replace(' ', '-');
+
+	$: console.log(value);
 </script>
 
 <div class="flex flex-col gap-2">

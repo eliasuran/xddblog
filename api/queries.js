@@ -215,3 +215,18 @@ export const getAccountSettings = async (req, res) => {
 		}
 	);
 };
+
+export const updateSettings = async (req, res) => {
+	try {
+		req.body.keys.forEach(async (key, i) => {
+			await pool.query('UPDATE users SET $1 = $2 WHERE name = $3', [
+				req.body.keys[i].replace(/["']+/g, ''),
+				req.body.values[i],
+				req.params.user
+			]);
+		});
+		return res.status(200).send({ status: 'ok' });
+	} catch (error) {
+		return res.status(400).send({ error: 'Bad request' });
+	}
+};

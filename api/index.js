@@ -11,6 +11,7 @@ import {
 	getAllPosts,
 	getUserPosts,
 	getSettings,
+	updateSettings,
 	getPublicProfileSettings,
 	getAccountSettings
 } from './queries.js';
@@ -38,6 +39,7 @@ app.get('/:user/posts', getUserPosts);
 
 // get various settings
 app.get('/:user/settings', getSettings);
+app.post('/:user/settings', updateSettings);
 app.get('/:user/settings/public-profile', getPublicProfileSettings);
 app.get('/:user/settings/account', getAccountSettings);
 
