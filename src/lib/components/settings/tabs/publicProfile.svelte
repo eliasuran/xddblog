@@ -30,7 +30,7 @@
 				})
 			});
 			if (res.status === 200) {
-				console.log('saved');
+				window.location.reload();
 			}
 		} catch (error) {
 			console.log(error);
