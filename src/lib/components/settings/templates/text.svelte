@@ -9,7 +9,7 @@
 <div class="flex flex-col gap-2">
 	<label for={name}>{label}</label>
 	{#if desc !== ''}
-		<span class="text-sm text-secondary">{desc}</span>
+		<span class="text-sm dark:text-secondary text-textLight/60">{desc}</span>
 	{/if}
 	<input
 		class={`p-1 w-${width} rounded-md border dark:border-secondary border-primaryLight bg-transparent`}

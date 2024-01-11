@@ -21,8 +21,7 @@ app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const host = '127.0.0.1';
-const port = 3250;
+const port = process.env.PORT || 3250;
 
 app.get('/users', getUsers);
 
@@ -43,6 +42,6 @@ app.post('/:user/settings', updateSettings);
 app.get('/:user/settings/public-profile', getPublicProfileSettings);
 app.get('/:user/settings/account', getAccountSettings);
 
-app.listen(port, host, () => {
-	console.log(`Running on ${host}:${port}`);
+app.listen(port, () => {
+	console.log(`Running on ${port}`);
 });

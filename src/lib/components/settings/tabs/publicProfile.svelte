@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { apiUrl } from '$lib/host';
 	import { page } from '$app/stores';
 	import { getSettings } from '$lib/utils/getSettings';
+	import { updateSettings } from '$lib/utils/updateSettings';
 	import { onMount } from 'svelte';
 	import Text from '../templates/text.svelte';
 	import TextArea from '../templates/textArea.svelte';
@@ -15,30 +15,12 @@
 	onMount(async () => {
 		settings = await getSettings($page.data.user_name, $page.url.searchParams.get('tab') || '');
 	});
-
-	const save = async () => {
-		try {
-			console.log(settings);
-			const res = await fetch(`${apiUrl}/${$page.data.user_name}/settings`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					keys: Object.keys(settings),
-					values: Object.values(settings)
-				})
-			});
-			if (res.status === 200) {
-				window.location.reload();
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
 </script>
 
-<form on:submit={save} class="h-full flex flex-col gap-4">
+<form
+	on:submit={() => updateSettings($page.data.user_name, settings)}
+	class="h-full flex flex-col gap-4"
+>
 	<h1 class="text-3xl">Public Profile</h1>
 	<div class="h-[1px] dark:bg-secondary bg-primaryLight" />
 	<Text
